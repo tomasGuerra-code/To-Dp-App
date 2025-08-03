@@ -3,15 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTaskBtn = document.getElementById('add-task')
     const taskList = document.getElementById('task-list')
     const emptyMessage = document.getElementById('empty-message')
-    const todoContainer = document.querySelector('.todos-container')
+    const todosContainer = document.querySelector('.todos-container')
     const progressBar = document.getElementById('progress')
     const progressNumbers = document.getElementById('numbers')
 
+    //Muestra u oculta el mensaje de "No hay tareas"
     const toggleEmptyState = () => {
         emptyMessage.style.display = taskList.children.length === 0 ? 'block' : 'none'
-        todoContainer.style.width = taskList.children.length === 0 ? '100%' : '100%'
-    }
-
+        todosContainer.style.width = taskList.children.length === 0 ? '100%' : '100%'
+      }
+    
+    //Calcula el total de tareas y las completadas, actualiza la barra de progreso y muestra un mensaje de celebración si todas las tareas están completas
     const updateProgress = (checkCompletion = true) => {
         const totalTasks = taskList.children.length
         const completedTasks = taskList.querySelectorAll('.checkbox:checked').length
@@ -20,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         progressNumbers.textContent = `${completedTasks} / ${totalTasks}`
 
         if (checkCompletion && totalTasks > 0 && completedTasks === totalTasks) {
-            confetti()
-            alert('Congratulations! All tasks are completed.') //probar a ver que tal
+            confettiEffect()
+            alert('Congratulations! All tasks are completed.')
     }
 
         if (totalTasks === 0) {
@@ -29,16 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
             progressNumbers.textContent = '0%'
             return
         }
-
-        const completionPercentage = Math.round((completedTasks / totalTasks) * 100)
-        progressBar.style.width = `${completionPercentage}%`
-        progressNumbers.textContent = `${completionPercentage}%`
-
-        if (checkCompletion && completionPercentage === 100) {
-            alert('Congratulations! All tasks are completed.')
-        }
     }
 
+    //Crea un li, con checkbox, texto de la tarea, botones de editar y eliminar.
+    //Desactiva el botón de editar si la tarea está completada. Y permite editar o eliminar la tarea.
     const addTask = (text, completed = false, checkCompletion = true) => {
         const taskText = text || taskInput.value.trim()
         if (!taskText) {
@@ -53,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="edit-btn">Edit</button>
             <button class="delete-btn">Delete</button>
         </div>` //agregar, buscar los iconos
+      }
 
         const checkbox = li.querySelector('.checkbox')
         const editBtn = li.querySelector('.edit-btn')
@@ -91,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         taskInput.value = ''
         toggleEmptyState()
         updateProgress(checkCompletion)
-    }
+    })
 
     addTaskBtn.addEventListener('click', () => addTask())
     taskInput.addEventListener('keypress', (e) => {
@@ -100,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             addTask()
         }
     })
-})
 
+//Funcion para lanzar confetti cuando todas las tareas están completas
 const confettiEffect = () => {
     const count = 200,
   defaults = {
