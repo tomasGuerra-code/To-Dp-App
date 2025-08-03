@@ -2,14 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskInput = document.getElementById('task-input')
     const addTaskBtn = document.getElementById('add-task')
     const taskList = document.getElementById('task-list')
-    const emptyImage = document.getElementById('empty-image')
+    const emptyMessage = document.getElementById('empty-message')
     const todoContainer = document.querySelector('.todos-container')
     const progressBar = document.getElementById('progress')
     const progressNumbers = document.getElementById('numbers')
 
     const toggleEmptyState = () => {
-        emptyImage.style.display = taskList.children.length === 0 ? 'block' : 'none'
-        todoContainer.style.width = taskList.children.length === 0 ? '100%' : '50%'
+        emptyMessage.style.display = taskList.children.length === 0 ? 'block' : 'none'
+        todoContainer.style.width = taskList.children.length === 0 ? '100%' : '100%'
     }
 
     const updateProgress = (checkCompletion = true) => {
@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.classList.toggle('completed', isChecked)
             editBtn.disabled = isChecked
             editBtn.style.opacity = isChecked ? '0.5' : '1'
+            updateProgress()
         })
 
         editBtn.addEventListener('click', () => {
